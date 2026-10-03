@@ -1,6 +1,6 @@
 let messages = [
   { id: 1, user: "Pikachu", text: "Hello World!" },
-  { id: 2, user: "Ash", text: "Node.js is fun!" },
+  { id: 2, user: "Amel", text: "Node.js is fun!" },
   { id: 3, user: "Pikachu", text: "Let's build a live chat!" },
 ];
 
