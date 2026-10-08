@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.text({ type: "text/*" }));
 
 app.use("/api/v1/messages", messagesRouter);
 

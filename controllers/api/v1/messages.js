@@ -4,6 +4,24 @@ let messages = [
   { id: 3, user: "Pikachu", text: "Let's build a live chat!" },
 ];
 
+const parseBody = (body) => {
+  if (typeof body === "string") {
+    try {
+      body = JSON.parse(body);
+    } catch {
+      body = {};
+    }
+  }
+
+  body = body || {};
+  const data =
+    body.message && typeof body.message === "object" ? body.message : body;
+  const text =
+    data.text ?? (typeof data.message === "string" ? data.message : undefined);
+
+  return { user: data.user, text };
+};
+
 export const list = (req, res) => {
   const user = req.query.user;
 
@@ -38,7 +56,7 @@ export const get = (req, res) => {
 };
 
 export const create = (req, res) => {
-  const { user, text } = req.body?.message || req.body || {};
+  const { user, text } = parseBody(req.body);
 
   if (!user || !text) {
     return res.status(400).json({
@@ -55,8 +73,9 @@ export const create = (req, res) => {
 
   messages.push(message);
 
-  res.status(201).json({
+  res.status(200).json({
     status: "success",
+    message: `POSTING a new message for user ${user}`,
     data: { message },
   });
 };
@@ -73,13 +92,14 @@ export const update = (req, res) => {
     });
   }
 
-  const { user, text } = req.body?.message || req.body || {};
+  const { user, text } = parseBody(req.body);
 
   if (user !== undefined) message.user = user;
   if (text !== undefined) message.text = text;
 
   res.json({
     status: "success",
+    message: `UPDATING a message with id ${message.id}`,
     data: { message },
   });
 };
@@ -101,6 +121,7 @@ export const remove = (req, res) => {
 
   res.json({
     status: "success",
+    message: `DELETING a message with id ${deletedMessage.id}`,
     data: { message: deletedMessage },
   });
 };
