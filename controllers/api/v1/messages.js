@@ -38,7 +38,7 @@ export const get = (req, res) => {
 };
 
 export const create = (req, res) => {
-  const { user, text } = req.body.message || {};
+  const { user, text } = req.body?.message || req.body || {};
 
   if (!user || !text) {
     return res.status(400).json({
@@ -73,7 +73,7 @@ export const update = (req, res) => {
     });
   }
 
-  const { user, text } = req.body.message || {};
+  const { user, text } = req.body?.message || req.body || {};
 
   if (user !== undefined) message.user = user;
   if (text !== undefined) message.text = text;
